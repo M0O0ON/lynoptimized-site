@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LYNOPTIMIZED - Opticraft Fork</title>
+  <style>
+    @font-face {
+      font-family: 'Minecraft';
+      src: url('Minecraft.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #111111;
+      background-image: 
+        url('bg.png'),
+        radial-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.95)),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.2) 2px, rgba(0,0,0,0.2) 4px);
+      background-repeat: repeat;
+      image-rendering: pixelated;
+      color: #e0e0e0;
+      font-family: 'Minecraft', 'Courier New', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    /* Top bar & Lang Switcher */
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .lang-selector {
+      background-color: #222;
+      border: 2px solid #555;
+      color: #fff;
+      font-family: 'Minecraft', monospace;
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .lang-selector:hover {
+      border-color: #aaa;
+      background-color: #333;
+    }
+
+    /* Header & Logo */
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-container {
+      display: inline-block;
+      max-width: 100%;
+    }
+
+    .logo-img {
+      max-width: 100%;
+      height: auto;
+      image-rendering: pixelated;
+    }
+
+    /* Panel Base */
+    .lce-panel {
+      background-color: #1a1a1a;
+      border: 4px solid #3c3c3c;
+      box-shadow: inset -4px -4px 0px #101010, inset 4px 4px 0px #555555;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .panel-title {
+      color: #ffff55;
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 0px #3f3f00;
+      border-bottom: 2px solid #333;
+      padding-bottom: 8px;
+    }
+
+    /* Feature List */
+    .feature-list {
+      list-style-type: none;
+    }
+
+    .feature-item {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: 10px;
+      font-size: 15px;
+      line-height: 1.4;
+      color: #ddd;
+    }
+
+    .feature-item::before {
+      content: '>';
+      position: absolute;
+      left: 0;
+      color: #55ff55;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #555;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="top-bar">
+      <select id="langSelect" class="lang-selector" onchange="changeLanguage(this.value)">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+        <option value="de">Deutsch</option>
+        <option value="es">Español</option>
+        <option value="pt">Português</option>
+        <option value="ru">Русский</option>
+      </select>
+    </div>
+
+    <header>
+      <div class="logo-container">
+        <img src="model.png" alt="LYNOPTIMIZED Logo" class="logo-img">
+      </div>
+    </header>
+
+    <main>
+      <div class="lce-panel">
+        <h2 class="panel-title" id="title-version">VERSION V40250</h2>
+        <ul class="feature-list" id="list-working">
+          <!-- Injecté par JS -->
+        </ul>
+      </div>
+    </main>
+
+    <footer>
+      Opticraft Fork &bull; Lynoptimized LCE
+    </footer>
+  </div>
+
+  <script>
+    const translations = {
+      fr: {
+        versionTitle: "VERSION V40250",
+        features: [
+          "Mises à jour automatiques",
+          "Deux types d'achievements : Progression dans la partie et succès de profil méta-progression",
+          "Nouveaux presets de déplacement",
+          "Bouton Jump sur l'écran tactile",
+          "Support du \"C-Stick\" et du \"Circle Pad Pro\"",
+          "Nouveau menu \"Profil\" : un menu d'activité permettant de changer son pseudo et visualiser ses succès débloqués",
+          "Skyblock",
+          "Menu \"Host privilege\"",
+          "Visée gyroscopique",
+          "Intégration de nouvelles musiques",
+          "Notification de la musique jouée en bas à droite",
+          "Nouveau clavier virtuel mieux optimisé",
+          "Intégration de skins",
+          "Aim Assist pour les animaux et les monstres",
+          "Fog (Brouillard)",
+          "Chunk distance : max 6",
+          "Limitation à 30 FPS disponible",
+          "Look Ramp (Max 1.00s)",
+          "Menu créatif style LCE",
+          "Nouveaux menus pour le Solo & Multijoueur",
+          "Logo avec thèmes festifs"
+        ]
+      },
+      en: {
+        versionTitle: "VERSION V40250",
+        features: [
+          "Automatic updates",
+          "Two types of achievements: In-game progression and meta-progression profile achievements",
+          "New movement presets",
+          "On-screen touch jump button",
+          "\"C-Stick\" and \"Circle Pad Pro\" support",
+          "New \"Profile\" menu: activity menu to change username and view unlocked achievements",
+          "Skyblock",
+          "\"Host privilege\" menu",
+          "Gyroscopic aiming",
+          "Integration of new music tracks",
+          "Now playing music notification in the bottom right corner",
+          "New, better-optimized virtual keyboard",
+          "Skin integration",
+          "Aim Assist for animals and mobs",
+          "Fog",
+          "Chunk distance: max 6",
+          "30 FPS cap option",
+          "Look Ramp (Max 1.00s)",
+          "LCE Creative Menu",
+          "New Singleplayer & Multiplayer menus",
+          "Logo with festive themes"
+        ]
+      },
+      de: {
+        versionTitle: "VERSION V40250",
+        features: [
+          "Automatische Updates",
+          "Zwei Arten von Erfolgen: In-Game-Fortschritt & Meta-Profil-Erfolge",
+          "Neue Bewegungsvoreinstellungen",
+          "Jump-Button auf dem Touchscreen",
+          "Unterstützung für \"C-Stick\" und \"Circle Pad Pro\"",
+          "Neues \"Profil\"-Menü: Benutzernamen ändern & Erfolge anzeigen",
+          "Skyblock",
+          "\"Host-Privilegien\"-Menü",
+          "Gyroskopisches Zielen",
+          "Neue Musiktracks integriert",
+          "Musik-Benachrichtigung unten rechts",
+          "Neues, optimiertes virtuelles Keyboard",
+          "Skin-Integration",
+          "Zielhilfe für Tiere und Monster",
+          "Nebel (Fog)",
+          "Sichtweite (Chunks): max 6",
+          "30 FPS Begrenzung Option",
+          "Look Ramp (Max 1.00s)",
+          "LCE Kreativmenü",
+          "Neue Einzel- & Mehrspielermenüs",
+          "Logo mit festlichen Themen"
+        ]
+      },
+      es: {
+        versionTitle: "VERSIÓN V40250",
+        features: [
+          "Actualizaciones automáticas",
+          "Dos tipos de logros: Progresión en partida y logros de perfil meta",
+          "Nuevos ajustes de movimiento",
+          "Botón de salto en pantalla táctil",
+          "Soporte para \"C-Stick\" y \"Circle Pad Pro\"",
+          "Nuevo menú \"Perfil\": cambiar nombre y ver logros desbloqueados",
+          "Skyblock",
+          "Menú \"Privilegios de host\"",
+          "Apuntado giroscópico",
+          "Integración de nueva música",
+          "Notificación de música abajo a la derecha",
+          "Nuevo teclado virtual optimizado",
+          "Integración de skins",
+          "Asistencia de apuntado para animales y monstruos",
+          "Niebla (Fog)",
+          "Distancia de renderizado: máx 6 chunks",
+          "Opción de límite de 30 FPS",
+          "Look Ramp (Máx 1.00s)",
+          "Menú Creativo estilo LCE",
+          "Nuevos menús para Un jugador y Multijugador",
+          "Logo con temas festivos"
+        ]
+      },
+      pt: {
+        versionTitle: "VERSÃO V40250",
+        features: [
+          "Atualizações automáticas",
+          "Dois tipos de conquistas: Progressão no jogo e perfil meta",
+          "Novos predefinições de movimento",
+          "Botão de pulo na tela sensível ao toque",
+          "Suporte a \"C-Stick\" e \"Circle Pad Pro\"",
+          "Novo menu \"Perfil\": alterar nome e ver conquistas desbloqueadas",
+          "Skyblock",
+          "Menu \"Privilégios de host\"",
+          "Mira giroscópica",
+          "Integração de novas músicas",
+          "Notificação de música no canto inferior direito",
+          "Novo teclado virtual otimizado",
+          "Integração de skins",
+          "Assistência de mira para animais e monstros",
+          "Névoa (Fog)",
+          "Distância de renderização: máx 6 chunks",
+          "Opção de limite de 30 FPS",
+          "Look Ramp (Máx 1.00s)",
+          "Menu Criativo estilo LCE",
+          "Novos menus para Um jogador e Multijogador",
+          "Logo com temas festivos"
+        ]
+      },
+      ru: {
+        versionTitle: "ВЕРСИЯ V40250",
+        features: [
+          "Автоматические обновления",
+          "Два типа достижений: Внутриигровые и мета-прогресс профиля",
+          "Новые пресеты управления",
+          "Кнопка прыжка на сенсорном экране",
+          "Поддержка \"C-Stick\" и \"Circle Pad Pro\"",
+          "Новое меню \"Профиль\": смена ника и просмотр достижений",
+          "Skyblock",
+          "Меню \"Privileges host\"",
+          "Гироскопическое прицеливание",
+          "Интеграция новой музыки",
+          "Уведомление о играющем треке внизу справа",
+          "Новая оптимизированная виртуальная клавиатура",
+          "Поддержка скинов",
+          "Aim Assist для животных и монстров",
+          "Туман (Fog)",
+          "Дальность прорисовки: макс 6 чанков",
+          "Ограничение до 30 FPS",
+          "Look Ramp (Макс 1.00 сек)",
+          "Творческое меню в стиле LCE",
+          "Новые меню для одиночной и сетевой игры",
+          "Логотип с праздничными темами"
+        ]
+      }
+    };
+
+    function changeLanguage(lang) {
+      const data = translations[lang] || translations.fr;
+      
+      document.getElementById('title-version').textContent = data.versionTitle;
+
+      const listContainer = document.getElementById('list-working');
+      listContainer.innerHTML = '';
+      
+      data.features.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'feature-item';
+        li.textContent = item;
+        listContainer.appendChild(li);
+      });
+    }
+
+    // Initialisation
+    changeLanguage('fr');
+  </script>
+</body>
+</html>
