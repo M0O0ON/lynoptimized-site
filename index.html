@@ -28,6 +28,7 @@
       image-rendering: pixelated;
       color: #e0e0e0;
       font-family: 'Minecraft', 'Courier New', monospace;
+      letter-spacing: 1px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -40,27 +41,132 @@
       max-width: 800px;
     }
 
-    /* Top bar & Lang Switcher */
+    /* Top bar & Controls */
     .top-bar {
       display: flex;
       justify-content: flex-end;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-bottom: 20px;
     }
 
-    .lang-selector {
+    .lang-selector, .theme-toggle, .discord-btn {
       background-color: #222;
       border: 2px solid #555;
       color: #fff;
       font-family: 'Minecraft', monospace;
+      letter-spacing: 1px;
       padding: 6px 12px;
       font-size: 14px;
       cursor: pointer;
       outline: none;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
     }
 
-    .lang-selector:hover {
+    .discord-btn {
+      background-color: #222;
+      border: 2px solid #5865F2;
+      color: #fff;
+    }
+
+    .discord-btn:hover {
+      background-color: #5865F2;
+      border-color: #7983f5;
+    }
+
+    .theme-icon, .discord-icon {
+      width: 16px;
+      height: 16px;
+      image-rendering: pixelated;
+      object-fit: contain;
+    }
+
+    .lang-selector:hover, .theme-toggle:hover {
       border-color: #aaa;
       background-color: #333;
+    }
+
+    /* Light Theme (Mode Jour) Overrides */
+    body.light-mode {
+      background-color: #c6c6c6;
+      background-image: 
+        url('bg_day.png'),
+        url('bg.png'),
+        radial-gradient(rgba(255,255,255,0.4), rgba(180,180,180,0.8));
+      color: #111111;
+    }
+
+    body.light-mode .lang-selector, 
+    body.light-mode .theme-toggle {
+      background-color: #e0e0e0;
+      border-color: #8b8b8b;
+      color: #000;
+    }
+
+    body.light-mode .discord-btn {
+      background-color: #5865F2;
+      border-color: #404EED;
+      color: #ffffff;
+    }
+
+    body.light-mode .discord-btn:hover {
+      background-color: #404EED;
+      border-color: #2c38b8;
+    }
+
+    body.light-mode .lang-selector:hover, 
+    body.light-mode .theme-toggle:hover {
+      background-color: #ffffff;
+      border-color: #333;
+    }
+
+    body.light-mode .lce-panel {
+      background-color: #c6c6c6;
+      border: 4px solid #ffffff;
+      box-shadow: inset -4px -4px 0px #555555, inset 4px 4px 0px #ffffff;
+    }
+
+    body.light-mode .panel-header {
+      border-bottom: 2px solid #8b8b8b;
+    }
+
+    body.light-mode .panel-title,
+    body.light-mode .toggle-icon {
+      color: #2a2a00;
+      text-shadow: 1px 1px 0px #ffffff;
+    }
+
+    body.light-mode .panel-header:hover .panel-title {
+      color: #000000;
+    }
+
+    body.light-mode .feature-item {
+      color: #111;
+    }
+
+    body.light-mode .feature-item::before {
+      color: #00aa00;
+    }
+
+    body.light-mode footer {
+      color: #444;
+    }
+
+    /* Fallback typographique pour le Russe */
+    body.lang-ru,
+    body.lang-ru .lang-selector,
+    body.lang-ru .theme-toggle,
+    body.lang-ru .discord-btn,
+    body.lang-ru .panel-title,
+    body.lang-ru .feature-item {
+      font-family: Arial, Helvetica, sans-serif !important;
     }
 
     /* Header & Logo */
@@ -80,7 +186,7 @@
       image-rendering: pixelated;
     }
 
-    /* Panel Base */
+    /* Panel LCE Base */
     .lce-panel {
       background-color: #1a1a1a;
       border: 4px solid #3c3c3c;
@@ -89,13 +195,42 @@
       margin-bottom: 25px;
     }
 
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 2px solid #333;
+      padding-bottom: 8px;
+    }
+
+    .panel-header:hover .panel-title {
+      color: #ffffff;
+    }
+
     .panel-title {
       color: #ffff55;
       font-size: 20px;
-      margin-bottom: 15px;
+      letter-spacing: 1.5px;
       text-shadow: 2px 2px 0px #3f3f00;
-      border-bottom: 2px solid #333;
-      padding-bottom: 8px;
+      transition: color 0.15s ease;
+    }
+
+    .toggle-icon {
+      color: #ffff55;
+      font-size: 16px;
+      text-shadow: 2px 2px 0px #3f3f00;
+    }
+
+    /* Content Collapsible Wrapper */
+    .panel-content {
+      margin-top: 15px;
+      display: block;
+    }
+
+    .panel-content.collapsed {
+      display: none;
     }
 
     /* Feature List */
@@ -110,6 +245,7 @@
       font-size: 15px;
       line-height: 1.4;
       color: #ddd;
+      letter-spacing: 0.8px;
     }
 
     .feature-item::before {
@@ -125,6 +261,7 @@
       margin-top: 30px;
       color: #555;
       font-size: 12px;
+      letter-spacing: 1px;
     }
   </style>
 </head>
@@ -132,6 +269,14 @@
 
   <div class="container">
     <div class="top-bar">
+      <a href="https://discord.com/users/murazelyne" target="_blank" class="discord-btn" title="Discord: murazelyne">
+        <img src="discord.png" alt="Discord" class="discord-icon" onerror="this.style.display='none'">
+        <span id="discordLabel">Demander et l'avoir</span>
+      </a>
+      <button id="themeToggleBtn" class="theme-toggle" onclick="toggleTheme()">
+        <img id="themeIcon" src="moon.png" alt="Mode Nuit" class="theme-icon" onerror="this.style.display='none'">
+        <span id="themeLabel">Nuit</span>
+      </button>
       <select id="langSelect" class="lang-selector" onchange="changeLanguage(this.value)">
         <option value="fr">Français</option>
         <option value="en">English</option>
@@ -144,16 +289,21 @@
 
     <header>
       <div class="logo-container">
-        <img src="model.png" alt="LYNOPTIMIZED Logo" class="logo-img">
+        <img src="model.png" alt="LYNOPTIMIZED Logo" class="logo-img" onerror="this.alt='LYNOPTIMIZED'">
       </div>
     </header>
 
     <main>
       <div class="lce-panel">
-        <h2 class="panel-title" id="title-version">VERSION V40250</h2>
-        <ul class="feature-list" id="list-working">
-          <!-- Injecté par JS -->
-        </ul>
+        <div class="panel-header" onclick="togglePanel()">
+          <h2 class="panel-title" id="title-version">VERSION V40250</h2>
+          <span class="toggle-icon" id="toggle-icon">▼</span>
+        </div>
+        <div class="panel-content" id="panel-content">
+          <ul class="feature-list" id="list-working">
+            <!-- Dynamic elements loaded via JS -->
+          </ul>
+        </div>
       </div>
     </main>
 
@@ -166,6 +316,9 @@
     const translations = {
       fr: {
         versionTitle: "VERSION V40250",
+        discordBtn: "Demander et l'avoir",
+        themeNight: "Nuit",
+        themeDay: "Jour",
         features: [
           "Mises à jour automatiques",
           "Deux types d'achievements : Progression dans la partie et succès de profil méta-progression",
@@ -192,6 +345,9 @@
       },
       en: {
         versionTitle: "VERSION V40250",
+        discordBtn: "Ask and have it",
+        themeNight: "Night",
+        themeDay: "Day",
         features: [
           "Automatic updates",
           "Two types of achievements: In-game progression and meta-progression profile achievements",
@@ -218,6 +374,9 @@
       },
       de: {
         versionTitle: "VERSION V40250",
+        discordBtn: "Fragen und haben",
+        themeNight: "Nacht",
+        themeDay: "Tag",
         features: [
           "Automatische Updates",
           "Zwei Arten von Erfolgen: In-Game-Fortschritt & Meta-Profil-Erfolge",
@@ -244,6 +403,9 @@
       },
       es: {
         versionTitle: "VERSIÓN V40250",
+        discordBtn: "Pedir y tener",
+        themeNight: "Noche",
+        themeDay: "Día",
         features: [
           "Actualizaciones automáticas",
           "Dos tipos de logros: Progresión en partida y logros de perfil meta",
@@ -270,6 +432,9 @@
       },
       pt: {
         versionTitle: "VERSÃO V40250",
+        discordBtn: "Pedir e ter",
+        themeNight: "Noite",
+        themeDay: "Dia",
         features: [
           "Atualizações automáticas",
           "Dois tipos de conquistas: Progressão no jogo e perfil meta",
@@ -296,6 +461,9 @@
       },
       ru: {
         versionTitle: "ВЕРСИЯ V40250",
+        discordBtn: "Спроси и получи",
+        themeNight: "Ночь",
+        themeDay: "День",
         features: [
           "Автоматические обновления",
           "Два типа достижений: Внутриигровые и мета-прогресс профиля",
@@ -322,10 +490,24 @@
       }
     };
 
+    let currentLang = 'fr';
+
     function changeLanguage(lang) {
+      currentLang = lang;
       const data = translations[lang] || translations.fr;
       
+      if (lang === 'ru') {
+        document.body.classList.add('lang-ru');
+      } else {
+        document.body.classList.remove('lang-ru');
+      }
+
       document.getElementById('title-version').textContent = data.versionTitle;
+      document.getElementById('discordLabel').textContent = data.discordBtn;
+
+      // Update theme text according to current theme state & language
+      const isLight = document.body.classList.contains('light-mode');
+      document.getElementById('themeLabel').textContent = isLight ? data.themeDay : data.themeNight;
 
       const listContainer = document.getElementById('list-working');
       listContainer.innerHTML = '';
@@ -338,7 +520,32 @@
       });
     }
 
-    // Initialisation
+    function togglePanel() {
+      const content = document.getElementById('panel-content');
+      const icon = document.getElementById('toggle-icon');
+      
+      content.classList.toggle('collapsed');
+      icon.textContent = content.classList.contains('collapsed') ? '▲' : '▼';
+    }
+
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light-mode');
+      const btnLabel = document.getElementById('themeLabel');
+      const btnIcon = document.getElementById('themeIcon');
+      const data = translations[currentLang] || translations.fr;
+
+      if (isLight) {
+        btnIcon.src = 'sun.png';
+        btnIcon.alt = 'Mode Jour';
+        btnLabel.textContent = data.themeDay;
+      } else {
+        btnIcon.src = 'moon.png';
+        btnIcon.alt = 'Mode Nuit';
+        btnLabel.textContent = data.themeNight;
+      }
+    }
+
+    // Init
     changeLanguage('fr');
   </script>
 </body>
